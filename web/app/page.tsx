@@ -3,6 +3,7 @@ import { ArrowRight, Boxes, ShieldCheck, Repeat, Activity, Info, Link2 } from "l
 import { Button } from "@/components/ui/Button";
 import { CorridorCard } from "@/components/CorridorCard";
 import { AnchorCard } from "@/components/AnchorCard";
+import { RegistryFreshness } from "@/components/RegistryFreshness";
 import { corridors, liveness } from "@/lib/corridors";
 import { fetchAttestations, REGISTRY_ID, REGISTRY_NETWORK } from "@/lib/registry";
 
@@ -74,13 +75,23 @@ export default async function Home() {
           <div>
             <h2 className="text-2xl font-semibold">Attested anchors</h2>
             <p className="max-w-2xl text-secondary-text">
-              Read from the on-chain registry (refreshed hourly); each card shows the attestation
-              ledger. Each card separates what an anchor&apos;s{" "}
+              Read from the on-chain registry; each card shows the attestation ledger and how long
+              ago that was. Each card separates what an anchor&apos;s{" "}
               <code className="rounded bg-bg-subtle px-1 py-0.5 text-xs">stellar.toml</code>{" "}
               <em>advertises</em> from what actually <em>worked</em> when it was probed — because
               those are different claims, and treating them as one is how a lane that does not
               exist comes to look healthy.
             </p>
+            {attestations.ok && (
+              <div className="mt-2">
+                <RegistryFreshness
+                  network={REGISTRY_NETWORK}
+                  readAt={attestations.readAt}
+                  latestLedger={attestations.latestLedger}
+                  revalidateSeconds={revalidate}
+                />
+              </div>
+            )}
           </div>
           {REGISTRY_ID && (
             <a
