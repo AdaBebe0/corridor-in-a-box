@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Boxes, ShieldCheck, Repeat, Activity, Info, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CorridorCard } from "@/components/CorridorCard";
+import { LivenessLegend } from "@/components/LivenessLegend";
 import { AnchorCard } from "@/components/AnchorCard";
 import { RegistryFreshness } from "@/components/RegistryFreshness";
 import { corridors, liveness } from "@/lib/corridors";
@@ -51,7 +52,12 @@ export default async function Home() {
       </section>
 
       {/* Features */}
-      <section className="grid gap-4 sm:grid-cols-3">
+      <section aria-labelledby="features-heading" className="grid gap-4 sm:grid-cols-3">
+        {/* The cards below are h3s; without an h2 above them the outline jumps
+            from the page title straight to level three. */}
+        <h2 id="features-heading" className="sr-only">
+          What it does
+        </h2>
         <Feature
           icon={<Repeat size={20} className="text-blue-600" />}
           title="Idempotent & resumable"
@@ -101,6 +107,7 @@ export default async function Home() {
               className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-bg-subtle px-3 py-1 text-xs font-medium text-secondary-text hover:underline"
             >
               <Link2 size={13} className="text-blue-600" /> verify on chain
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
         </div>
@@ -141,6 +148,7 @@ export default async function Home() {
             <Info size={13} className="text-blue-600" /> Manifest snapshot — not a live liveness probe
           </span>
         </div>
+        <LivenessLegend />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {corridors.map((c) => (
             <CorridorCard key={c.id} corridor={c} />
